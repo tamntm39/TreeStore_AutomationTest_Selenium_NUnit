@@ -30,7 +30,7 @@ namespace Login_Test
                 var worksheet = workbook.Worksheet(6);
                 var rows = worksheet.RangeUsed().RowsUsed();
 
-                foreach (var row in rows.Skip(1)) // Bỏ qua dòng tiêu đề
+                foreach (var row in rows.Skip(1)) 
                 {
                     string username = row.Cell(3).GetValue<string>();
                     string password = row.Cell(4).GetValue<string>();
@@ -53,23 +53,20 @@ namespace Login_Test
             emailInput.SendKeys(Keys.Backspace);
             emailInput.SendKeys(username);
 
-            // Nhập mật khẩu
             var passwordInput = driver.FindElement(By.CssSelector("input[type='password']"));
             passwordInput.Clear();
             passwordInput.SendKeys(" ");
             passwordInput.SendKeys(Keys.Backspace);
             passwordInput.SendKeys(password);
 
-            // Click nút Login
             driver.FindElement(By.CssSelector("button")).Click();
 
-            // Chờ hộp thoại xuất hiện (tối đa 5 giây)
             bool isSuccess = false;
-            for (int i = 0; i < 10; i++) // Kiểm tra 10 lần, mỗi lần 500ms (tổng 5 giây)
+            for (int i = 0; i < 10; i++)
             {
                 Thread.Sleep(500);
                 var popups = driver.FindElements(By.ClassName("swal2-popup"));
-                if (popups.Count > 0) // Hộp thoại xuất hiện
+                if (popups.Count > 0) 
                 {
                     isSuccess = true;
                     break;
@@ -78,7 +75,6 @@ namespace Login_Test
 
             if (isSuccess)
             {
-                // Click nút OK để đóng hộp thoại nếu có
                 var okButtons = driver.FindElements(By.ClassName("swal2-confirm"));
                 if (okButtons.Count > 0)
                 {
@@ -86,10 +82,8 @@ namespace Login_Test
                 }
             }
 
-            // Ghi kết quả vào Excel
             WriteResultToExcel(username, isSuccess ? "Pass" : "Fail");
 
-            // So sánh với kết quả mong đợi
             Assert.AreEqual(expected, isSuccess ? "Pass" : "Fail", $"Đăng nhập với {username} thất bại!");
         }
 
@@ -108,7 +102,7 @@ namespace Login_Test
                 }
             }
 
-            workbook.Save(); // Lưu file Excel
+            workbook.Save(); 
             workbook.Dispose();
         }
 

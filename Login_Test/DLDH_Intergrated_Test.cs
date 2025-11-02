@@ -23,7 +23,7 @@ namespace OrderStatusTest
         {
             ChromeOptions options = new ChromeOptions();
             options.AddArgument("--start-maximized");
-            options.AddArgument("force-device-scale-factor=0.8"); // Zoom 80%
+            options.AddArgument("force-device-scale-factor=0.8"); 
             driver = new ChromeDriver(options);
         }
 
@@ -34,13 +34,13 @@ namespace OrderStatusTest
             driver.Navigate().GoToUrl(url);
             Thread.Sleep(2000);
 
-            if (url.Contains("4300")) // User login page
+            if (url.Contains("4300")) 
             {
                 driver.FindElement(By.Id("email")).SendKeys(email);
                 driver.FindElement(By.Id("password")).SendKeys(password);
                 driver.FindElement(By.CssSelector("button[type='submit']")).Click();
             }
-            else // Admin login page
+            else
             {
                 driver.FindElement(By.Id("email")).SendKeys(email);
                 driver.FindElement(By.Id("password")).SendKeys(password);
@@ -96,7 +96,6 @@ namespace OrderStatusTest
             driver.FindElement(By.XPath("//button[text()='Thực hiện!']")).Click();
             Thread.Sleep(2000);
 
-            // Kiểm tra trạng thái trên user side
             Login("http://localhost:4300/dangnhap", "taolatui@gmail.com", "123456");
             driver.Navigate().GoToUrl("http://localhost:4300/lichsudonhang");
             Thread.Sleep(2000);

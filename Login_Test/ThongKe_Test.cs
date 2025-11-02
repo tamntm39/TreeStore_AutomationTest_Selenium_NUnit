@@ -24,10 +24,8 @@ namespace QLDH_Test
         public void Login()
         {
             driver.Navigate().GoToUrl("http://localhost:4200/login");
-            // Nhập email
             driver.FindElement(By.CssSelector("input[type='email']")).SendKeys("minhtam39@gmail.com");
 
-            //// Nhập mật khẩu
             driver.FindElement(By.CssSelector("input[type='password']")).SendKeys("YourSecurePassword");
 
             driver.FindElement(By.CssSelector("button")).Click();

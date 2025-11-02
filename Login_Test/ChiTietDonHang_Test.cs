@@ -27,13 +27,11 @@ namespace OrderDetailTest
         {
             driver.Navigate().GoToUrl("http://localhost:4200/login");
 
-            // Nhập email
+
             driver.FindElement(By.CssSelector("input[type='email']")).SendKeys("minhtam39@gmail.com");
 
-            //// Nhập mật khẩu
             driver.FindElement(By.CssSelector("input[type='password']")).SendKeys("YourSecurePassword");
 
-            // Click nút Login
             driver.FindElement(By.CssSelector("button")).Click();
 
            
@@ -61,20 +59,15 @@ namespace OrderDetailTest
         [Test, TestCaseSource(nameof(GetOrderData))]
         public void VerifyOrderDetails(string orderId, string customerName, string address, string totalAmount, string status)
         {
-            // 1. Đăng nhập vào hệ thống
             Login();
             Thread.Sleep(2000);
 
-            // 2. Mở danh sách đơn hàng
             driver.Navigate().GoToUrl("http://localhost:4200/manages/order/order-list");
             Thread.Sleep(2000);
 
-            // 3. Tìm đơn hàng theo ID và nhấn nút "Xem chi tiết"
-            // Tìm tất cả các hàng trong bảng
             bool orderFound = false;
 
 
-            // Tìm đơn hàng theo ID
             string xpath = $"//tbody/tr[td[2][normalize-space()='{orderId}']]";
             var orderRow = driver.FindElements(By.XPath(xpath));
 
@@ -85,12 +78,10 @@ namespace OrderDetailTest
             }
 
             var detailButton = orderRow[0].FindElement(By.XPath(".//td[last()]//button"));
-            // Sử dụng Actions Class để click
             Actions actions = new Actions(driver);
             actions.MoveToElement(detailButton).Click().Perform();
             Thread.Sleep(2000);
 
-            // 4. Kiểm tra thông tin trên trang chi tiết đơn hàng
             string displayedCustomerName = driver.FindElement(By.CssSelector(".order-details-container h5:nth-of-type(1)")).Text;
             string displayedAddress = driver.FindElement(By.CssSelector(".order-details-container h5:nth-of-type(2)")).Text;
             string displayedStatus = driver.FindElement(By.CssSelector(".order-details-container h5:nth-of-type(3)")).Text;
@@ -99,7 +90,6 @@ namespace OrderDetailTest
                            displayedAddress.Contains(address) &&
                            displayedStatus.Contains(status);
 
-            // 5. Ghi kết quả vào Excel
             WriteResultToExcel(orderId, isMatch ? "Pass" : "Fail");
 
             Assert.IsTrue(isMatch, "Thông tin đơn hàng không khớp với dữ liệu trong file Excel!");
@@ -115,7 +105,7 @@ namespace OrderDetailTest
             {
                 if (row.Cell(2).GetValue<string>() == orderId)
                 {
-                    row.Cell(7).Value = result; // Cột "Kết quả kiểm thử"
+                    row.Cell(7).Value = result; 
                     break;
                 }
             }

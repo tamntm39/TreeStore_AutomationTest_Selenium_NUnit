@@ -22,17 +22,15 @@ namespace OrderStatusTest
         {
             ChromeOptions options = new ChromeOptions();
             options.AddArgument("--start-maximized");
-            options.AddArgument("force-device-scale-factor=0.8"); // Zoom 80%
+            options.AddArgument("force-device-scale-factor=0.8"); 
             driver = new ChromeDriver(options);
         }
 
         public void Login()
         {
             driver.Navigate().GoToUrl("http://localhost:4200/login");
-            // Nhập email
             driver.FindElement(By.CssSelector("input[type='email']")).SendKeys("minhtam39@gmail.com");
 
-            //// Nhập mật khẩu
             driver.FindElement(By.CssSelector("input[type='password']")).SendKeys("YourSecurePassword");
 
             driver.FindElement(By.CssSelector("button")).Click();
@@ -42,7 +40,7 @@ namespace OrderStatusTest
         {
             var workbook = new XLWorkbook(excelPath);
             var worksheet = workbook.Worksheet(5);
-            var rows = worksheet.RangeUsed().RowsUsed().Skip(1); // Bỏ qua tiêu đề cột
+            var rows = worksheet.RangeUsed().RowsUsed().Skip(1); 
 
             foreach (var row in rows)
             {
@@ -155,19 +153,19 @@ namespace OrderStatusTest
                 using (var workbook = new XLWorkbook(stream))
                 {
                     var worksheet = workbook.Worksheet(5);
-                    var rowsToUpdate = worksheet.RangeUsed().RowsUsed().Skip(1) // Bỏ qua tiêu đề
+                    var rowsToUpdate = worksheet.RangeUsed().RowsUsed().Skip(1) 
                         .Where(row => row.Cell(1).GetValue<string>() == testCaseId
                                    && row.Cell(2).GetValue<string>() == orderId)
-                        .ToList(); // Lấy tất cả các dòng phù hợp
+                        .ToList(); 
 
                     if (rowsToUpdate.Count > 0)
                     {
                         foreach (var row in rowsToUpdate)
                         {
-                            row.Cell(5).Value = result; // Ghi vào cột 5
+                            row.Cell(5).Value = result; 
                         }
 
-                        workbook.SaveAs(stream); // Lưu lại workbook
+                        workbook.SaveAs(stream); 
                         Console.WriteLine($"📄 Đã ghi kết quả '{result}' cho tất cả TestCase {testCaseId}, Order {orderId}.");
                     }
                     else
